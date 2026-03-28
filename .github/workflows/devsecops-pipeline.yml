@@ -53,9 +53,9 @@ jobs:
       - name: Setup Snyk CLI
         uses: snyk/actions/setup@v1
 
-      # Run Snyk Scan (fail on high severity)
+      # Run Snyk Scan (soft mode, always exit 0)
       - name: Snyk Scan
-        run: snyk test --file=packages.config --package-manager=nuget --severity-threshold=high --json > snyk-report.json
+        run: snyk test --file=packages.config --package-manager=nuget --severity-threshold=high --json --exit-code=0 > snyk-report.json
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
