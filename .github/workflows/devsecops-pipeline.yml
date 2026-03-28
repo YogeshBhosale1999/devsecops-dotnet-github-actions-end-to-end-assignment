@@ -49,15 +49,22 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      # Install Snyk CLI (correct action)
+      # Install Snyk CLI
       - name: Setup Snyk CLI
         uses: snyk/actions/setup@v1
 
       # Run Snyk Scan (fail on high severity)
       - name: Snyk Scan
-        run: snyk test --file=packages.config --package-manager=nuget --severity-threshold=high
+        run: snyk test --file=packages.config --package-manager=nuget --severity-threshold=high --json > snyk-report.json
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      # Upload Snyk Report
+      - name: Upload Snyk Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: snyk-report
+          path: snyk-report.json
 
   # --- Stage 3: Dynamic Scan (ZAP) ---
   zap-scan:
