@@ -1,4 +1,4 @@
-name: DevSecOps Pipeline
+name: DevSecOps Pipeline for Dot Net Application
 
 on:
   push:
@@ -49,17 +49,15 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      # Install Snyk CLI
       - name: Setup Snyk CLI
         uses: snyk/actions/setup@v1
 
-      # Run Snyk Scan (soft mode, always exit 0)
       - name: Snyk Scan
-        run: snyk test --file=packages.config --package-manager=nuget --severity-threshold=high --json --exit-code=0 > snyk-report.json
+        run: snyk test --file=packages.config --package-manager=nuget --severity-threshold=high --json > snyk-report.json
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true   # <-- this makes sure pipeline continues
 
-      # Upload Snyk Report
       - name: Upload Snyk Report
         uses: actions/upload-artifact@v4
         with:
