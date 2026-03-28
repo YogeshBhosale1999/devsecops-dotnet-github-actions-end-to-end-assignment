@@ -12,10 +12,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4   # updated
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4   # updated
         with:
           dotnet-version: '6.0.x'
 
@@ -55,7 +55,7 @@ jobs:
 
       # --- Artifact Upload ---
       - name: Upload ZAP Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4   # updated
         with:
           name: zap-report
           path: zap_report.html
