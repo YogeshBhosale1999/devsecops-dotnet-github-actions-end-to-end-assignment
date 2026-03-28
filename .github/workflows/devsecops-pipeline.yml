@@ -27,8 +27,7 @@ jobs:
         run: msbuild SomeConsoleApplication.sln /p:Configuration=Release
 
       - name: Run unit tests
-        run: |
-          vstest.console.exe SomeConsoleApplicationTest\bin\Release\SomeConsoleApplicationTest.dll
+        run: msbuild SomeConsoleApplicationTest\SomeConsoleApplicationTest.csproj /p:Configuration=Release /p:Platform="Any CPU" /t:VSTest
 
   # --- Stage 2: Static & Dependency Scans ---
   security-scans:
