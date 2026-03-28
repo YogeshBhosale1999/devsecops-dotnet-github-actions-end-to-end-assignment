@@ -26,10 +26,11 @@ jobs:
       - name: Build solution
         run: msbuild SomeConsoleApplication.sln /p:Configuration=Release
 
+      - name: Setup VSTest
+        uses: darenm/Setup-VSTest@v1
+
       - name: Run unit tests
-        run: |
-          "C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" ^
-          SomeConsoleApplicationTest\bin\Release\SomeConsoleApplicationTest.dll
+        run: vstest.console.exe SomeConsoleApplicationTest\bin\Release\SomeConsoleApplicationTest.dll
 
   # --- Stage 2: Static & Dependency Scans ---
   security-scans:
@@ -39,7 +40,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # SonarCloud Scan
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         with:
@@ -49,7 +49,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      # Snyk Scan
       - name: Snyk Scan
         uses: snyk/actions/dotnet@master
         env:
@@ -65,14 +64,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Run OWASP ZAP Baseline Scan
       - name: OWASP ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.6.0
         with:
           target: 'http://localhost:5000'
         continue-on-error: true
 
-      # Upload ZAP Report
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4
         with:
