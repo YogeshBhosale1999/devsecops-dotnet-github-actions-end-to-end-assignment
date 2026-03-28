@@ -49,9 +49,9 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      # Install Snyk CLI
+      # Install Snyk CLI (correct action)
       - name: Setup Snyk CLI
-        uses: snyk/actions/setup@v3
+        uses: snyk/actions/setup@v3.1.0
 
       # Run Snyk Scan (fail on high severity)
       - name: Snyk Scan
